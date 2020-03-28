@@ -4,7 +4,6 @@ module.exports = function(router) {
     router.post("/createProduct", async (req, res) => {
         try {
 
-            console.log("smsmdsmdsmmsdm",req.path)
             res.status(200).json(await ProductModel.create(req.body))
         } catch (err) {
             res.status(500).json(err)

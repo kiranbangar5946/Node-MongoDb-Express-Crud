@@ -82,7 +82,7 @@ module.exports=  {
       */
      async getProduct(data) {
        try {
-           let ProductData = await Product.findOne({ _id: data._id })
+           let ProductData = await (await Product.findOne({ _id: data._id })).populated("categoryId")
            return _.isEmpty(ProductData) ? "No Product Found" : ProductData
        } catch (err) {
            throw err

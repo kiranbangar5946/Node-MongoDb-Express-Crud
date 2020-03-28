@@ -1,7 +1,6 @@
 var CategoryModel = require("../models/CategoryModel.js");
 module.exports = function(router) {
     router.post("/createCategory", async (req, res) => {
-        console.log("am herere bc",req.path)
         try {
             res.status(200).json(await CategoryModel.create(req.body))
         } catch (err) {

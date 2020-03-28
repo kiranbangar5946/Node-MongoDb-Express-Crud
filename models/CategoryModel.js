@@ -9,7 +9,6 @@ module.exports= {
     return savedData
    }
    catch(err){
-     console.log("Err",err)
      throw err
    }
 },
@@ -33,7 +32,7 @@ let updated=  await  Category.updateOne(
       }
 },
 /**
- * The function for get all Categorys
+ * The function for get all Category
  * @param {data} input nothing
  * @param {callback} callback function with err and response
  */
