@@ -8,7 +8,8 @@ var productSchema = new Schema(
     },
     categoryId:{
       type:Schema.Types.ObjectId,
-      ref:"Category" 
+      ref:"Category",
+      index:true
     },
     productId:String
 
