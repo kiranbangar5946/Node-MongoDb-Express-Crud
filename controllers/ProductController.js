@@ -20,13 +20,12 @@ module.exports = function(router) {
         try {
             res.status(200).json(await ProductModel.getAll(req.body))
         } catch (err) {
-            console.log("err",err)
             res.status(500).json(err)
         }
     })
-    router.post("/deleteProduct", async (req, res) => {
+    router.delete("/deleteProduct/:id", async (req, res) => {
         try {
-            res.status(200).json(await ProductModel.deleteProduct(req.body))
+            res.status(200).json(await ProductModel.deleteProduct(req.params))
         } catch (err) {
             res.status(500).json(err)
         }

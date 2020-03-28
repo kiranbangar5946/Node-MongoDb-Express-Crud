@@ -37,9 +37,10 @@ let updated=  await  Category.updateOne(
  * @param {callback} callback function with err and response
  */
 async getAll(data) {
+  try{
     var page
-    if (data.body.page) {
-        page = data.body.page
+    if (data.page) {
+        page = data.page
     }
     else{
       page=1
@@ -47,7 +48,7 @@ async getAll(data) {
     var maxRow = 10
     var start = (page - 1) * maxRow
    
-    var categories = await Category.find({})
+    var categories = await Category.find({}).lean()
     .skip(start)
     .limit(maxRow)
 if (_.isEmpty(categories)) {
@@ -57,10 +58,14 @@ if (_.isEmpty(categories)) {
     var objToSend = {}
     objToSend.TotalCount = totalCategory
     objToSend.count = maxRow
-    objToSend.result = bets
+    objToSend.data = categories
     objToSend.status = 200
     return objToSend
 }
+  }
+  catch(err){
+    throw err
+  }
 },
 /**
  * The function for delete Category
@@ -68,11 +73,16 @@ if (_.isEmpty(categories)) {
  * @param {callback} callback function with err and response
  */
 async deleteCategory(data) {
-  let deletedOutput = Category.deleteOne({ _id: data._id })
+  try{
+  let deletedOutput = await Category.deleteOne({ _id: data.id })
   if (_.isEmpty(deletedOutput)) {
       throw "No Such Category Exist"
   }
   return deletedOutput
+}catch(err){
+  throw err
+}
+
 },
 /**
  * The function for get one  Category
@@ -81,10 +91,18 @@ async deleteCategory(data) {
  */
 async getCategory(data) {
   try {
-      let categoryData = await Category.findOne({ _id: data._id })
+      let categoryData = await Category.findOne({ _id: data.id })
       return _.isEmpty(categoryData) ? "No Category Found" : categoryData
   } catch (err) {
       throw err
+  }
+},
+async getList(){
+  try{
+let categories=await Category.find({})
+return _.isEmpty(categories) ? "No Category Found" : categories
+}catch(err){
+    throw err
   }
 }
 }

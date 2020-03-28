@@ -1,5 +1,8 @@
 var express = require("express");
 var app = express();
+var cors = require('cors')
+app.use(cors())
+
 
 var categoryRoutes = require("./controllers/CategoryController");
 var productRoutes = require("./controllers/ProductController");

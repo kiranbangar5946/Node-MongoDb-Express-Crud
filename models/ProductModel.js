@@ -8,7 +8,6 @@ module.exports=  {
          return savedData
         }
         catch(err){
-          console.log("Err",err)
           throw err
         }
      },
@@ -28,7 +27,6 @@ module.exports=  {
          return (updated.nModified) ? "Updated successfully" : "Failed to update"
            }
            catch(err){
-               console.log("err",err)
              throw err
            }
      },
@@ -44,7 +42,7 @@ module.exports=  {
          }else{
              page=1
          }
-         var maxRow = 5
+         var maxRow = 2
          var start = (page - 1) * maxRow
         
          var products = await Product.find({})
@@ -52,13 +50,13 @@ module.exports=  {
          .skip(start)
          .limit(maxRow)
      if (_.isEmpty(products)) {
-         return "No content"
+         return 204
      } else {
          let totalProduct = await Product.countDocuments({})
          var objToSend = {}
          objToSend.TotalCount = totalProduct
          objToSend.count = maxRow
-         objToSend.result = products
+         objToSend.data = products
          objToSend.status = 200
          return objToSend
      }
@@ -69,12 +67,18 @@ module.exports=  {
       * @param {callback} callback function with err and response
       */
      async deleteProduct(data) {
-       let deletedOutput = Product.deleteOne({ _id: data._id })
-       if (_.isEmpty(deletedOutput)) {
-           throw "No Such Product Exist"
-       }
-       return deletedOutput
-     },
+        try{
+        let deletedOutput = await Product.deleteOne({ _id: data.id })
+        if (_.isEmpty(deletedOutput)) {
+            throw "No Such Product Exist"
+        }
+        return deletedOutput
+      }catch(err){
+        throw err
+      }
+      
+      },
+      
      /**
       * The function for get one  Product
       * @param {data} input _id of Product
@@ -82,7 +86,7 @@ module.exports=  {
       */
      async getProduct(data) {
        try {
-           let ProductData = await (await Product.findOne({ _id: data._id })).populated("categoryId")
+           let ProductData = await (await Product.findOne({ _id: data.id })).populate("categoryId")
            return _.isEmpty(ProductData) ? "No Product Found" : ProductData
        } catch (err) {
            throw err
