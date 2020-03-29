@@ -9,12 +9,14 @@ var productRoutes = require("./controllers/ProductController");
 
 var bodyParser = require("body-parser");
 var { global } = require("./config/globals");
+// choose environment
 process.env.NODE_ENV = !process.env.NODE_ENV
 ? "development"
 : process.env.NODE_ENV;
 
 global.env=require(__dirname + "/config/env/" + process.env.NODE_ENV);
  require("./config/database");
+ //
 var router = express.Router();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
